@@ -40,6 +40,10 @@ const register = async (req, res) => {
 
     if (error) throw error
 
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ error: 'Server configuration error' })
+    }
+
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET,

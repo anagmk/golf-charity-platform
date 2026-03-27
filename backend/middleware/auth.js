@@ -1,6 +1,10 @@
 const jwt = require('jsonwebtoken')
 
 const verifyToken = (req, res, next) => {
+  if (!process.env.JWT_SECRET) {
+    return res.status(500).json({ error: 'Server configuration error' })
+  }
+
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
 
