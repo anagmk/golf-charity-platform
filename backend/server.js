@@ -1,13 +1,16 @@
 const express = require('express')
 const cors = require('cors')
-require('dotenv').config({ path: __dirname + '/.env' })
+
+// only load .env locally, not on Vercel
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config({ path: __dirname + '/.env' })
+}
 
 const authRoutes = require('./routes/auth')
 const scoreRoutes = require('./routes/scores')
 const subscriptionRoutes = require('./routes/subscription')
 const drawRoutes = require('./routes/draw')
 const adminRoutes = require('./routes/admin')
-const verifyToken = require('./middleware/auth')
 
 const app = express()
 
@@ -31,7 +34,6 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3000
 
-// only listen locally — not on Vercel
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
